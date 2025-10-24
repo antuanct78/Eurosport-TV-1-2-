@@ -1,50 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Reproductor IPTV Simple</title>
+    <meta charset="UTF-8">
+    <title>Reproductor HLS EuroSport</title>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    <style>
-        body { font-family: sans-serif; }
-        #canal-selector { margin-bottom: 10px; }
-        #video { width: 100%; max-width: 800px; }
-    </style>
 </head>
 <body>
 
-    <h1>Mi Reproductor de Canales</h1>
+    <h1>Canales EuroSport (HLS)</h1>
 
-    <select id="canal-selector" onchange="cambiarCanal()">
-        <option value="">Selecciona un canal</option>
-        <option value="http://185.189.225.157/EuroSport1/index.m3u8">Eurosport 1</option>
-        <option value="http://185.189.225.157/EuroSport2/index.m3u8">Eurosport 2</option>
-        </select>
-
-    <video id="video" controls></video>
+    <h2>EuroSport 1</h2>
+    <video id="videoEurosport1" controls width="640" height="360"></video>
+    
+    <hr>
+    
+    <h2>EuroSport 2</h2>
+    <video id="videoEurosport2" controls width="640" height="360"></video>
 
     <script>
-        const video = document.getElementById('video');
+        const url1 = 'http://185.189.225.157/EuroSport1/index.m3u8';
+        const url2 = 'http://185.189.225.157/EuroSport2/index.m3u8';
 
-        function cambiarCanal() {
-            const url = document.getElementById('canal-selector').value;
-
-            if (Hls.isSupported() && url) {
-                const hls = new Hls();
-                hls.loadSource(url);
-                hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                    video.play();
-                });
-            } else if (video.canPlayType('application/vnd.apple.mpegurl') && url) {
-                // Soporte nativo de HLS (principalmente Safari)
-                video.src = url;
-                video.addEventListener('loadedmetadata', function() {
-                    video.play();
-                });
-            } else if (url) {
-                alert('Tu navegador no soporta la reproducción HLS directamente.');
-            }
-        }
-    </script>
-
-</body>
-</html>
+        function loadHLS(videoElementId, streamUrl) {
+            const video = document.getElementById(
