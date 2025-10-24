@@ -43,3 +43,66 @@
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reproductor de Canal M3U8</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <style>
+        /* Estilo básico para que el video ocupe un buen tamaño */
+        #video {
+            width: 80%; /* Ocupa el 80% del ancho de la página */
+            max-width: 900px; /* Máximo 900 píxeles de ancho */
+            height: auto;
+            display: block;
+            margin: 20px auto; /* Centra el reproductor en la página */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Canal de Deportes en Vivo</h1>
+
+    <video id="video" controls autoplay muted></video>
+
+    <script>
+        // *** ENLACE M3U8 DEL USUARIO ***
+        var hlsUrl = 'Https://deportes.ksdjugfsddeports.com:9092/MTg1LjMuMTE5LjE1NA==/42_.m3u8?token=kTZ4JCMsojoiLLJ_GwxIVg&expires=1761328473';
+        
+        var video = document.getElementById('video');
+
+        if (Hls.isSupported()) {
+            var hls = new Hls();
+            
+            // 3.1. Carga el enlace M3U8
+            hls.loadSource(hlsUrl); 
+            
+            // 3.2. Asocia el stream al elemento <video>
+            hls.attachMedia(video);
+            
+            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                // 3.3. Inicia la reproducción una vez cargado el manifiesto
+                video.play();
+            });
+        } 
+        // 4. Fallback para Safari (que soporta HLS nativamente)
+        else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = hlsUrl;
+            video.addEventListener('loadedmetadata', function() {
+                video.play();
+            });
+        }
+    </script>
+
+</body>
+</html>
