@@ -18,8 +18,28 @@
     <video id="videoEurosport2" controls width="640" height="360"></video>
 
     <script>
+        // *** IMPORTANTE: Reemplaza estas URLs con enlaces .m3u8 que sí funcionen ***
         const url1 = 'http://185.189.225.157/EuroSport1/index.m3u8';
         const url2 = 'http://185.189.225.157/EuroSport2/index.m3u8';
 
         function loadHLS(videoElementId, streamUrl) {
-            const video = document.getElementById(
+            const video = document.getElementById(videoElementId);
+            
+            // Intenta reproducir con hls.js si el navegador lo soporta
+            if (Hls.isSupported()) {
+                const hls = new Hls();
+                hls.loadSource(streamUrl);
+                hls.attachMedia(video);
+            } 
+            // Si no, usa el soporte nativo del navegador (ej. Safari)
+            else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = streamUrl;
+            }
+        }
+        
+        // Llama a la función para cargar los videos
+        loadHLS('videoEurosport1', url1);
+        loadHLS('videoEurosport2', url2);
+    </script>
+</body>
+</html>
